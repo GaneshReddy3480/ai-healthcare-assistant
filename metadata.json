@@ -1,0 +1,6 @@
+{
+  "name": "MediFind AI",
+  "description": "AI-powered medicine availability search, prescription OCR scanner, nearby pharmacy finder, health assistant, and inventory management system.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

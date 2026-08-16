@@ -1,0 +1,128 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with emergency health information and settings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "pharmacist", "admin"] },
+        "phone": { "type": "string" },
+        "blood_group": { "type": "string" },
+        "allergies": { "type": "array" },
+        "address": { "type": "string" },
+        "date_of_birth": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Reminder": {
+      "title": "Reminder",
+      "description": "Medication schedule reminders for a patient",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "medicine_name": { "type": "string" },
+        "dosage": { "type": "string" },
+        "time": { "type": "string" },
+        "frequency": { "type": "string" },
+        "days_of_week": { "type": "string" },
+        "start_date": { "type": "string" },
+        "end_date": { "type": "string" },
+        "notes": { "type": "string" },
+        "is_active": { "type": "boolean" },
+        "last_taken": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["user_id", "medicine_name", "dosage", "time", "frequency"]
+    },
+    "Reservation": {
+      "title": "Reservation",
+      "description": "Guaranteed 4-hour hold reservation at a verified local pharmacy",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "medicine_id": { "type": "string" },
+        "pharmacy_id": { "type": "string" },
+        "medicine_name": { "type": "string" },
+        "pharmacy_name": { "type": "string" },
+        "quantity": { "type": "number" },
+        "status": { "type": "string", "enum": ["confirmed", "picked_up", "cancelled", "expired"] },
+        "reserved_at": { "type": "string" },
+        "expires_at": { "type": "string" },
+        "total_estimated_cost": { "type": "number" },
+        "token_code": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["user_id", "medicine_id", "pharmacy_id", "medicine_name", "pharmacy_name", "token_code", "status"]
+    },
+    "Prescription": {
+      "title": "Prescription",
+      "description": "Digitized OCR prescription scan and extracted medicine records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "image_url": { "type": "string" },
+        "raw_text": { "type": "string" },
+        "doctor_name": { "type": "string" },
+        "patient_name": { "type": "string" },
+        "date": { "type": "string" },
+        "detected_medicines": { "type": "array" },
+        "created_at": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["user_id", "raw_text", "status"]
+    },
+    "Pharmacy": {
+      "title": "Pharmacy",
+      "description": "Verified pharmacy partner directory listing",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "address": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "postal_code": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "rating": { "type": "number" },
+        "reviews_count": { "type": "number" },
+        "opening_hours": { "type": "string" },
+        "is_open_now": { "type": "boolean" },
+        "is_24x7": { "type": "boolean" }
+      },
+      "required": ["id", "name", "address", "phone", "latitude", "longitude"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile with emergency health info and settings"
+    },
+    "/users/{userId}/reminders/{reminderId}": {
+      "schema": "Reminder",
+      "description": "Medication schedule reminders for a user"
+    },
+    "/users/{userId}/reservations/{reservationId}": {
+      "schema": "Reservation",
+      "description": "User medicine hold reservations"
+    },
+    "/users/{userId}/prescriptions/{prescriptionId}": {
+      "schema": "Prescription",
+      "description": "User scanned and digitized prescriptions"
+    },
+    "/pharmacies/{pharmacyId}": {
+      "schema": "Pharmacy",
+      "description": "Verified pharmacy locations"
+    }
+  }
+}
